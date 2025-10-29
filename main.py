@@ -3,12 +3,13 @@ import webbrowser
 import pyttsx3
 import music_liabrary
 import requests
+from dotenv import load_dotenv
+import os
 # pip istall pocketsphinx
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
-newsapi ="ef500f2f2db04d67bd67e38216163489"     # api get from web (news api)
-
+newsapi = os.getenv("NEWS_API_KEY")
 def speak(text):
     engine.say(text)
     engine.runAndWait()
