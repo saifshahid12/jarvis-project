@@ -1,12 +1,25 @@
+# main.py
 from openai import OpenAI
-client=OpenAI(api_key="OPEN_AI_API")
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Get API key from .env
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+client = OpenAI(api_key=api_key)
+
+# Create a chat completion
 completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role":"system","content":"you are a virtual assistant name jarvis skilled in general task like google_cloud and alaxa "},
-        {"role":"user","content":"what is coding"}
+        {"role": "system", "content": "You are a virtual assistant named Jarvis, skilled in general tasks like Google Cloud and Alexa."},
+        {"role": "user", "content": "What is coding?"}
     ]
 )
 
-print(completion.choices[0].message)
+# Print the assistant's reply
+print(completion.choices[0].message.content)
