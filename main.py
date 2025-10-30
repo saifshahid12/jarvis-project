@@ -3,16 +3,56 @@ import webbrowser
 import pyttsx3
 import music_liabrary
 import requests
+import google.generativeai as genai
+from gtts import gTTS
+import pygame
 from dotenv import load_dotenv
 import os
 # pip istall pocketsphinx
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
-newsapi = os.getenv("NEWS_API_KEY")
-def speak(text):
+newsapi = " "
+
+def speak_old(text):
     engine.say(text)
     engine.runAndWait()
+
+def speak(text):
+    tts = gTTS(text)
+    tts.save('temp.mp3')
+
+    # Initialize Pygame mixer
+    pygame.mixer.init()
+
+    # Load the mp3 file
+    pygame.mixer.music.load('temp.mp3')
+
+    # Play the mp3 file
+    pygame.mixer.music.play()
+
+    # Keep the program running until the music stop playing
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+
+    pygame.mixer.music.unload()
+    os.remove('temp.mp3')
+
+def aiProcess(command):
+    # Configure gemini with your google api key
+    genai.configure(api_key = "AIzaSyBM14vRkb86-2ZwQKEo9RfQLaGIHRpvOb8")
+
+    # Create the model (you can use gemini-2.5-flash or gemini 2.5 pro)
+    model = genai.GenerativeModel('gemini-2.5-flash')
+
+    # Generate the response
+    response = model.generate_content([
+        "You are a virtual assistant name Jarvis skilled in genetal tasks like Alixa and Google cloud.",
+        command
+    ])
+
+    # Return the text result
+    return response.text
 
 def prcessCommand(c):
 
@@ -39,6 +79,11 @@ def prcessCommand(c):
             # print the headlines 
             for article in articles:
                 speak(article['title'])
+    
+    else:
+        # GenAi handle the request
+        output = aiProcess(c)
+        speak(output)
         
 
 
