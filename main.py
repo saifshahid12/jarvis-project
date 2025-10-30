@@ -40,7 +40,7 @@ def speak(text):
 
 def aiProcess(command):
     # Configure gemini with your google api key
-    genai.configure(api_key = "AIzaSyBM14vRkb86-2ZwQKEo9RfQLaGIHRpvOb8")
+    genai.configure(api_key = "API_KEY")
 
     # Create the model (you can use gemini-2.5-flash or gemini 2.5 pro)
     model = genai.GenerativeModel('gemini-2.5-flash')
